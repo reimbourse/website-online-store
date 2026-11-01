@@ -31,13 +31,11 @@ Features a RESTful API with JWT authentication, product browsing, cart managemen
 ### Backend
 
 ```bash
-git clone https://github.com/to7allysucks/website-online-store.git
+git clone https://github.com/reimbourse/website-online-store.git
+pip install uv
+
 cd website-online-store/backend
-
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-
-pip install -r requirements.txt
+uv sync
 ```
 
 Create a `.env` file:
@@ -52,7 +50,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```bash
 alembic upgrade head
 
-fastapi dev main.py             # or: uvicorn main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 API runs at `http://localhost:8000` — docs at `/docs`.
@@ -86,7 +84,7 @@ Protected routes require `Authorization: Bearer <token>`.
 
 ## Authors
 
-[@to7allysucks](https://github.com/to7allysucks) — backend &nbsp;·&nbsp; [@Kwinxxx](https://github.com/Kwinxxx) — frontend
+[@reimbourse](https://github.com/reimbourse) — backend &nbsp;·&nbsp; [@Kwinxxx](https://github.com/Kwinxxx) — frontend
 
 ---
 
