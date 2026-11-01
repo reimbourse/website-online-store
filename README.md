@@ -50,7 +50,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```bash
 alembic upgrade head
 
-uv run uvicorn app.main:app --reload
+uv run uvicorn main:app --reload
 ```
 
 API runs at `http://localhost:8000` — docs at `/docs`.
