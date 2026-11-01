@@ -6,39 +6,48 @@ from app.core.database import Base
 from app.schemas.product import GenderEnum
 import uuid
 
+
 class Product(Base):
-    __tablename__ = 'products'
+    __tablename__ = "products"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
     description = Column(String)
     price = Column(Numeric(10, 2), nullable=False)
-    category_id = Column(UUID(as_uuid=True), ForeignKey('categories.id'))
-    collection_id = Column(UUID(as_uuid=True), ForeignKey('collections.id'))
+    category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id"))
+    collection_id = Column(UUID(as_uuid=True), ForeignKey("collections.id"))
     gender = Column(Enum(GenderEnum), nullable=True)
-    category = relationship('Category', foreign_keys=[category_id])
-    collection = relationship('Collection', foreign_keys=[collection_id])
-    variants = relationship('ProductVariant', back_populates='product')
-    images = relationship('ProductImage', back_populates='product')
+    category = relationship("Category", foreign_keys=[category_id])
+    collection = relationship("Collection", foreign_keys=[collection_id])
+    variants = relationship("ProductVariant", back_populates="product")
+    images = relationship("ProductImage", back_populates="product")
+
 
 class ProductVariant(Base):
-    __tablename__ = 'product_variants'
+    __tablename__ = "product_variants"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id = Column(UUID(as_uuid=True), ForeignKey('products.id'))
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
     color = Column(String)
     size = Column(String)
     stock = Column(Integer, default=0)
 
-    product = relationship('Product', back_populates='variants', foreign_keys=[product_id])
+    product = relationship(
+        "Product", back_populates="variants", foreign_keys=[product_id]
+    )
+
 
 class ProductImage(Base):
-    __tablename__ = 'product_images'
+    __tablename__ = "product_images"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id = Column(UUID(as_uuid=True), ForeignKey('products.id'))
-    variant_id = Column(UUID(as_uuid=True), ForeignKey('product_variants.id'), nullable=True)
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
+    variant_id = Column(
+        UUID(as_uuid=True), ForeignKey("product_variants.id"), nullable=True
+    )
     url = Column(String, nullable=False)
     is_main = Column(Boolean, default=False)
 
-    product = relationship('Product', back_populates='images', foreign_keys=[product_id])
+    product = relationship(
+        "Product", back_populates="images", foreign_keys=[product_id]
+    )

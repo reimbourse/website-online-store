@@ -8,18 +8,15 @@ from app.models.product import Product, ProductVariant
 from app.models.category import Category
 from app.schemas.product import ProductFilterParams
 
-class ProductService:
 
+class ProductService:
     @staticmethod
-    async def get_filtered_products(
-            db: AsyncSession,
-            filters: ProductFilterParams
-    ):
+    async def get_filtered_products(db: AsyncSession, filters: ProductFilterParams):
         query = select(Product).options(
             selectinload(Product.images),
             selectinload(Product.variants),
             selectinload(Product.category),
-            selectinload(Product.collection)
+            selectinload(Product.collection),
         )
 
         if filters.min_price is not None:
@@ -27,9 +24,11 @@ class ProductService:
         if filters.max_price is not None:
             query = query.where(Product.price <= filters.max_price)
         if filters.search is not None:
-            query = query.where(Product.name.ilike(f'%{filters.search}%'))
+            query = query.where(Product.name.ilike(f"%{filters.search}%"))
         if filters.category is not None:
-            query = query.join(Product.category).where(Category.slug == filters.category)
+            query = query.join(Product.category).where(
+                Category.slug == filters.category
+            )
         if filters.gender is not None:
             query = query.where(Product.gender == filters.gender)
         if filters.color is not None or filters.size is not None:
@@ -53,28 +52,36 @@ class ProductService:
 
         items = []
         for product in products:
-            main_img_url = 'https://placehold.co/300x400'
+            main_img_url = "https://placehold.co/300x400"
             for img in product.images:
                 if img.is_main:
                     main_img_url = img.url
                     break
 
-            available_colors = list(set([var.color for var in product.variants if var.color]))
-            available_sizes = list(set([var.size for var in product.variants if var.size]))
+            available_colors = list(
+                set([var.color for var in product.variants if var.color])
+            )
+            available_sizes = list(
+                set([var.size for var in product.variants if var.size])
+            )
 
-            items.append({
-                'id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'category': product.category,
-                'gender': product.gender,
-                'collection': product.collection,
-                'main_image': main_img_url,
-                'colors': available_colors,
-                'sizes': available_sizes,
-                'default_variant_id': product.variants[0].id if product.variants else None
-            })
+            items.append(
+                {
+                    "id": product.id,
+                    "name": product.name,
+                    "description": product.description,
+                    "price": product.price,
+                    "category": product.category,
+                    "gender": product.gender,
+                    "collection": product.collection,
+                    "main_image": main_img_url,
+                    "colors": available_colors,
+                    "sizes": available_sizes,
+                    "default_variant_id": product.variants[0].id
+                    if product.variants
+                    else None,
+                }
+            )
 
         return total, items
 
@@ -84,12 +91,12 @@ class ProductService:
             selectinload(Product.images),
             selectinload(Product.variants),
             selectinload(Product.category),
-            selectinload(Product.collection)
+            selectinload(Product.collection),
         )
         query = query.where(Product.id == product_id)
         result = await db.execute(query)
 
         product = result.scalars().one_or_none()
         if not product:
-            raise HTTPException(status_code=404, detail='Not Found')
+            raise HTTPException(status_code=404, detail="Not Found")
         return product

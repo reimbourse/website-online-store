@@ -2,10 +2,12 @@ from pydantic import BaseModel, Field, model_validator, field_validator
 from enum import Enum
 from uuid import UUID
 
+
 class GenderEnum(str, Enum):
-    MAN = 'MAN'
-    WOMAN = 'WOMAN'
-    KID = 'KID'
+    MAN = "MAN"
+    WOMAN = "WOMAN"
+    KID = "KID"
+
 
 class ProductImageResponse(BaseModel):
     id: UUID
@@ -14,6 +16,7 @@ class ProductImageResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class ProductVariantResponse(BaseModel):
     id: UUID
@@ -24,6 +27,7 @@ class ProductVariantResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class CategoryShortResponse(BaseModel):
     id: UUID
     name: str
@@ -31,12 +35,14 @@ class CategoryShortResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class CollectionShortResponse(BaseModel):
     id: UUID
     name: str
 
     class Config:
         from_attributes = True
+
 
 class ProductDetailResponse(BaseModel):
     id: UUID
@@ -51,6 +57,7 @@ class ProductDetailResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class ProductFilterParams(BaseModel):
     limit: int = Field(default=20, ge=1, le=50)
     offset: int = Field(default=0, ge=0)
@@ -62,12 +69,13 @@ class ProductFilterParams(BaseModel):
     search: str | None = None
     gender: GenderEnum | None = None
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def validate_prices(self):
         if self.min_price is not None and self.max_price is not None:
             if self.min_price > self.max_price:
-                raise ValueError('Максимальная цена меньше минимальной')
+                raise ValueError("Максимальная цена меньше минимальной")
         return self
+
 
 class ProductResponse(BaseModel):
     id: UUID
@@ -84,6 +92,7 @@ class ProductResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class ProductListResponse(BaseModel):
     total: int

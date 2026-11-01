@@ -11,19 +11,19 @@ from app.schemas.order import OrderCreate
 
 
 class OrderService:
-
     @staticmethod
-    async def create_order(
-            db: AsyncSession,
-            user_id: UUID,
-            payload: OrderCreate
-    ):
-        query = (select(CartItem).where(CartItem.user_id == user_id)
-                 .options(selectinload(CartItem.variant).selectinload(ProductVariant.product)))
+    async def create_order(db: AsyncSession, user_id: UUID, payload: OrderCreate):
+        query = (
+            select(CartItem)
+            .where(CartItem.user_id == user_id)
+            .options(
+                selectinload(CartItem.variant).selectinload(ProductVariant.product)
+            )
+        )
         result = await db.execute(query)
         cart_items = result.scalars().all()
         if not cart_items:
-            raise HTTPException(status_code=400, detail='Bad Request')
+            raise HTTPException(status_code=400, detail="Bad Request")
         subtotal = 0
         for item in cart_items:
             subtotal += item.quantity * item.variant.product.price
@@ -34,10 +34,10 @@ class OrderService:
         total = subtotal + shipping_cost
         new_order = Order(
             user_id=user_id,
-            status='pending',
+            status="pending",
             subtotal=subtotal,
             shipping_cost=shipping_cost,
-            total=total
+            total=total,
         )
         db.add(new_order)
         await db.flush()
@@ -47,16 +47,15 @@ class OrderService:
                 order_id=new_order.id,
                 variant_id=item.variant_id,
                 quantity=item.quantity,
-                price_at_purchase=item.variant.product.price
+                price_at_purchase=item.variant.product.price,
             )
             db.add(order_item)
             if item.variant.stock < item.quantity:
-                raise HTTPException(status_code=400, detail='Bad Request')
+                raise HTTPException(status_code=400, detail="Bad Request")
             item.variant.stock -= item.quantity
 
         shipping_address = ShippingAddress(
-            order_id=new_order.id,
-            **payload.model_dump()
+            order_id=new_order.id, **payload.model_dump()
         )
         db.add(shipping_address)
 

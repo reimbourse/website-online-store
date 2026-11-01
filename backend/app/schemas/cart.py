@@ -1,6 +1,7 @@
 from uuid import UUID
 from pydantic import BaseModel, Field
 
+
 class CartProductResponse(BaseModel):
     id: UUID
     name: str
@@ -9,6 +10,7 @@ class CartProductResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class CartVariantResponse(BaseModel):
     id: UUID
@@ -19,6 +21,7 @@ class CartVariantResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class CartItemResponse(BaseModel):
     id: UUID
     quantity: int
@@ -27,13 +30,16 @@ class CartItemResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class CartResponse(BaseModel):
     items: list[CartItemResponse]
     total_price: float
 
+
 class CartItemCreate(BaseModel):
     variant_id: UUID
     quantity: int = Field(default=1, ge=1)
+
 
 class CartItemUpdate(BaseModel):
     quantity: int = Field(ge=1)

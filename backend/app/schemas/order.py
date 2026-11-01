@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 from uuid import UUID
 
+
 class OrderCreate(BaseModel):
     first_name: str
     last_name: str
@@ -12,6 +13,7 @@ class OrderCreate(BaseModel):
     city: str
     address: str
     postal_code: str
+
 
 class OrderResponse(BaseModel):
     id: UUID
