@@ -2,9 +2,9 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from core.database import get_db
-from core.security import decode_token
-from models.user import User
+from app.core.database import get_db
+from app.core.security import decode_token
+from app.models.user import User
 from jose import JWTError, ExpiredSignatureError
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/auth/login')

@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.database import get_db
-from core.dependencies import get_current_user
-from models.user import User
-from schemas.order import OrderResponse, OrderCreate
-from services.order import OrderService
+from app.core.database import get_db
+from app.core.dependencies import get_current_user
+from app.models.user import User
+from app.schemas.order import OrderResponse, OrderCreate
+from app.services.order import OrderService
 
 router = APIRouter(prefix='/orders', tags=['Orders'])
 

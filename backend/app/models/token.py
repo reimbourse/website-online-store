@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, DateTime, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import UUID
-from core.database import Base
+from app.core.database import Base
 import uuid
 
 class RefreshToken(Base):

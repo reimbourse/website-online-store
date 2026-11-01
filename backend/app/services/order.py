@@ -4,10 +4,10 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from models.cart import CartItem
-from models.product import ProductVariant, Product
-from models.order import Order, OrderItem, ShippingAddress
-from schemas.order import OrderCreate
+from app.models.cart import CartItem
+from app.models.product import ProductVariant, Product
+from app.models.order import Order, OrderItem, ShippingAddress
+from app.schemas.order import OrderCreate
 
 
 class OrderService:

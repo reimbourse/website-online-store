@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
-from core.database import Base
+from app.core.database import Base
 import uuid
 
 class Category(Base):

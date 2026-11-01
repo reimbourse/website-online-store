@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
-from api.router import v1_router
+from app.api.router import v1_router
 
 app = FastAPI(title='Cloth Online Store API')
 

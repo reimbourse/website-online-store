@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
 from uuid import UUID
 
-from models.product import Product, ProductVariant
-from models.category import Category
-from schemas.product import ProductFilterParams
+from app.models.product import Product, ProductVariant
+from app.models.category import Category
+from app.schemas.product import ProductFilterParams
 
 class ProductService:
 

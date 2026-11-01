@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from core.dependencies import get_current_user
-from core.database import get_db
-from models.user import User
-from schemas.favorite import FavoriteResponse, FavoriteCreate
-from services.favorite import FavoriteService
+from app.core.dependencies import get_current_user
+from app.core.database import get_db
+from app.models.user import User
+from app.schemas.favorite import FavoriteResponse, FavoriteCreate
+from app.services.favorite import FavoriteService
 
 router = APIRouter(prefix='/favorites', tags=['Favorites'])
 

@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from core.database import get_db
-from schemas.product import ProductFilterParams, ProductListResponse, ProductDetailResponse
-from services.product import ProductService
+from app.core.database import get_db
+from app.schemas.product import ProductFilterParams, ProductListResponse, ProductDetailResponse
+from app.services.product import ProductService
 
 router = APIRouter(prefix='/products', tags=['Products'])
 

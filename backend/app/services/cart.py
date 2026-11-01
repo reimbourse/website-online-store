@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
 from uuid import UUID
 
-from models.product import Product, ProductVariant
-from models.cart import CartItem
-from schemas.cart import CartItemCreate, CartItemUpdate
+from app.models.product import Product, ProductVariant
+from app.models.cart import CartItem
+from app.schemas.cart import CartItemCreate, CartItemUpdate
 
 
 class CartService:

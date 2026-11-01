@@ -1,9 +1,9 @@
-from models.category import Category, Collection
+from app.models.category import Category, Collection
 from sqlalchemy import Column, String, Numeric, Boolean, Integer, ForeignKey, Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from core.database import Base
-from schemas.product import GenderEnum
+from app.core.database import Base
+from app.schemas.product import GenderEnum
 import uuid
 
 class Product(Base):

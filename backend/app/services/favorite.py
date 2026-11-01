@@ -4,8 +4,8 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from models.favorite import Favorite
-from models.product import Product
+from app.models.favorite import Favorite
+from app.models.product import Product
 
 class FavoriteService:
 

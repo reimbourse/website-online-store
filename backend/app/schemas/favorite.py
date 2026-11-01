@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from uuid import UUID
-from schemas.product import ProductResponse
+from app.schemas.product import ProductResponse
 
 class FavoriteCreate(BaseModel):
     product_id: UUID

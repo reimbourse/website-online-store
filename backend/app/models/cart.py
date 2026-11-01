@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from models.product import ProductVariant
-from core.database import Base
+from app.models.product import ProductVariant
+from app.core.database import Base
 import uuid
 from datetime import datetime
 
