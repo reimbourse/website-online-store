@@ -70,13 +70,13 @@ App runs at `http://localhost:5173`.
 
 ## API
 
-**Auth** — `/api/auth/register` · `/api/auth/login` · `/api/auth/me`
+**Auth** — `/api/v1/auth/register` · `/api/v1/auth/login` · `/api/v1/auth/me`
 
-**Products** — `/api/products/` · `/api/products/{id}`
+**Products** — `/api/v1/products` · `/api/v1/products/{id}`
 
-**Cart** — `/api/cart/` · `/api/cart/items` · `/api/cart/items/{id}`
+**Cart** — `/api/v1/cart` · `/api/v1/cart/items` · `/api/v1/cart/items/{id}`
 
-**Orders** — `/api/orders/`
+**Orders** — `/api/v1/orders`
 
 Protected routes require `Authorization: Bearer <token>`.
 
