@@ -10,7 +10,6 @@ app = FastAPI(title="Cloth Online Store API")
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -29,9 +28,9 @@ async def redirect_to_docs():
     return RedirectResponse(url="/docs", status_code=301)
 
 
-@app.get("/api/health", summary="Health", tags=["Root"])
-def health():
-    return {"success": "OK"}
+@app.get("/api/health", summary="Health Check", tags=["Root"])
+async def health():
+    return {"success": "ok"}
 
 
 if __name__ == "__main__":
