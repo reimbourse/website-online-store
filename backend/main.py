@@ -25,7 +25,7 @@ app.include_router(v1_router, prefix="/api")
 
 @app.get("/", include_in_schema=False)
 async def redirect_to_docs():
-    return RedirectResponse(url="/docs", status_code=status.HTTP_301_MOVED_PERMANENTLY)
+    return RedirectResponse(url="/docs", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
 
 @app.get("/api/health", summary="Health Check", tags=["Root"])
