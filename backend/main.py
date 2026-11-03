@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
@@ -25,7 +25,7 @@ app.include_router(v1_router, prefix="/api")
 
 @app.get("/", include_in_schema=False)
 async def redirect_to_docs():
-    return RedirectResponse(url="/docs", status_code=301)
+    return RedirectResponse(url="/docs", status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
 
 @app.get("/api/health", summary="Health Check", tags=["Root"])

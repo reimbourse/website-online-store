@@ -1,7 +1,7 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select, func, cast, String
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import HTTPException
 from uuid import UUID
 
 from app.models.product import Product, ProductVariant
@@ -98,5 +98,7 @@ class ProductService:
 
         product = result.scalars().one_or_none()
         if not product:
-            raise HTTPException(status_code=404, detail="Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found"
+            )
         return product

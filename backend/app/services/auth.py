@@ -1,5 +1,5 @@
+from fastapi import HTTPException, status
 from datetime import datetime, timezone, timedelta
-from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,7 +22,9 @@ class AuthService:
         user = result.scalar_one_or_none()
 
         if not user or not verify_password(payload.password, user.password_hash):
-            raise HTTPException(status_code=401, detail="Invalid credentials")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+            )
 
         access_token = create_access_token({"sub": str(user.id)})
         refresh_token = create_refresh_token({"sub": str(user.id)})
@@ -50,7 +52,10 @@ class AuthService:
     async def register_user(payload: UserRegister, db: AsyncSession):
         result = await db.execute(select(User).where(User.email == payload.email))
         if result.scalar_one_or_none():
-            raise HTTPException(status_code=400, detail="Email already registered")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered",
+            )
 
         user = User(
             email=payload.email,

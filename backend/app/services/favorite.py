@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -56,6 +56,8 @@ class FavoriteService:
         favorite_item = result.scalars().first()
 
         if favorite_item is None:
-            raise HTTPException(status_code=404, detail="Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found"
+            )
         await db.delete(favorite_item)
         await db.commit()

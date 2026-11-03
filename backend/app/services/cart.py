@@ -1,7 +1,7 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import HTTPException
 from uuid import UUID
 
 from app.models.product import Product, ProductVariant
@@ -73,7 +73,9 @@ class CartService:
         variant = check_result.scalars().first()
 
         if not variant:
-            raise HTTPException(status_code=404, detail="Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found"
+            )
         stock = variant.stock
 
         result = await db.execute(query)
@@ -82,11 +84,15 @@ class CartService:
         new_item = None
         if existing_item is not None:
             if existing_item.quantity + payload.quantity > stock:
-                raise HTTPException(status_code=400, detail="Bad Request")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request"
+                )
             existing_item.quantity += payload.quantity
         else:
             if payload.quantity > stock:
-                raise HTTPException(status_code=400, detail="Bad Request")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request"
+                )
             new_item = CartItem(
                 variant_id=payload.variant_id,
                 quantity=payload.quantity,
@@ -111,9 +117,13 @@ class CartService:
         item = result.scalars().first()
 
         if not item:
-            raise HTTPException(status_code=404, detail="Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found"
+            )
         if payload.quantity > item.variant.stock:
-            raise HTTPException(status_code=400, detail="Bad Request")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request"
+            )
         item.quantity = payload.quantity
         await db.commit()
 
@@ -128,6 +138,8 @@ class CartService:
         item = result.scalars().first()
 
         if not item:
-            raise HTTPException(status_code=404, detail="Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Not Found"
+            )
         await db.delete(item)
         await db.commit()

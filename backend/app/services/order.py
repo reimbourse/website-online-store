@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy import select, delete
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -23,7 +23,9 @@ class OrderService:
         result = await db.execute(query)
         cart_items = result.scalars().all()
         if not cart_items:
-            raise HTTPException(status_code=400, detail="Bad Request")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request"
+            )
         subtotal = 0
         for item in cart_items:
             subtotal += item.quantity * item.variant.product.price
@@ -51,7 +53,9 @@ class OrderService:
             )
             db.add(order_item)
             if item.variant.stock < item.quantity:
-                raise HTTPException(status_code=400, detail="Bad Request")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request"
+                )
             item.variant.stock -= item.quantity
 
         shipping_address = ShippingAddress(
