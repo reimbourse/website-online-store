@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
@@ -11,7 +10,6 @@ from app.core.database import Base
 class Order(Base):
     __tablename__ = "orders"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     status = Column(String, default="pending")
     subtotal = Column(Numeric(10, 2))
@@ -28,7 +26,6 @@ class Order(Base):
 class OrderItem(Base):
     __tablename__ = "order_items"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"))
     variant_id = Column(UUID(as_uuid=True), ForeignKey("product_variants.id"))
     quantity = Column(Integer)
@@ -40,7 +37,6 @@ class OrderItem(Base):
 class ShippingAddress(Base):
     __tablename__ = "shipping_addresses"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"), unique=True)
     first_name = Column(String)
     last_name = Column(String)

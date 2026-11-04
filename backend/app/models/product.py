@@ -1,5 +1,3 @@
-import uuid
-
 from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -11,7 +9,6 @@ from app.schemas.product import GenderEnum
 class Product(Base):
     __tablename__ = "products"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
     description = Column(String)
     price = Column(Numeric(10, 2), nullable=False)
@@ -27,7 +24,6 @@ class Product(Base):
 class ProductVariant(Base):
     __tablename__ = "product_variants"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
     color = Column(String)
     size = Column(String)
@@ -41,7 +37,6 @@ class ProductVariant(Base):
 class ProductImage(Base):
     __tablename__ = "product_images"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
     variant_id = Column(
         UUID(as_uuid=True), ForeignKey("product_variants.id"), nullable=True
