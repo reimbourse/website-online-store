@@ -2,10 +2,10 @@ from datetime import datetime
 
 from sqlalchemy import Column, DateTime, String
 
-from app.core.database import Base
+from app.core.database import Base, UUIDIdMixin
 
 
-class User(Base):
+class User(Base, UUIDIdMixin):
     __tablename__ = "users"
 
     email = Column(String, unique=True, nullable=False)

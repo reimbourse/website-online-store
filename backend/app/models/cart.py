@@ -4,10 +4,10 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core.database import Base, UUIDIdMixin
 
 
-class CartItem(Base):
+class CartItem(Base, UUIDIdMixin):
     __tablename__ = "cart_items"
 
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))

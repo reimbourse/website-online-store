@@ -4,10 +4,10 @@ from sqlalchemy import Column, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core.database import Base, UUIDIdMixin
 
 
-class Favorite(Base):
+class Favorite(Base, UUIDIdMixin):
     __tablename__ = "favorites"
 
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))

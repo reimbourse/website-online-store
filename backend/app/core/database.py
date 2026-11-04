@@ -18,6 +18,9 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 
 class Base(DeclarativeBase):
+    pass
+
+class UUIDIdMixin:
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
 

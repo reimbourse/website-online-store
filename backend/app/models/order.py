@@ -4,10 +4,10 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core.database import Base, UUIDIdMixin
 
 
-class Order(Base):
+class Order(Base, UUIDIdMixin):
     __tablename__ = "orders"
 
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
@@ -23,7 +23,7 @@ class Order(Base):
     )
 
 
-class OrderItem(Base):
+class OrderItem(Base, UUIDIdMixin):
     __tablename__ = "order_items"
 
     order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"))
@@ -34,7 +34,7 @@ class OrderItem(Base):
     order = relationship("Order", back_populates="items")
 
 
-class ShippingAddress(Base):
+class ShippingAddress(Base, UUIDIdMixin):
     __tablename__ = "shipping_addresses"
 
     order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"), unique=True)

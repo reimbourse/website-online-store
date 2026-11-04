@@ -2,11 +2,11 @@ from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, Numeric, Stri
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from app.core.database import Base
+from app.core.database import Base, UUIDIdMixin
 from app.schemas.product import GenderEnum
 
 
-class Product(Base):
+class Product(Base, UUIDIdMixin):
     __tablename__ = "products"
 
     name = Column(String, nullable=False)
@@ -21,7 +21,7 @@ class Product(Base):
     images = relationship("ProductImage", back_populates="product")
 
 
-class ProductVariant(Base):
+class ProductVariant(Base, UUIDIdMixin):
     __tablename__ = "product_variants"
 
     product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
@@ -34,7 +34,7 @@ class ProductVariant(Base):
     )
 
 
-class ProductImage(Base):
+class ProductImage(Base, UUIDIdMixin):
     __tablename__ = "product_images"
 
     product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
