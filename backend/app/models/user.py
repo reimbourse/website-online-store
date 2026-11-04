@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, String
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.sql import func
 
 from app.core.database import Base, UUIDIdMixin
 
@@ -8,8 +9,8 @@ from app.core.database import Base, UUIDIdMixin
 class User(Base, UUIDIdMixin):
     __tablename__ = "users"
 
-    email = Column(String, unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    email: Mapped[str] = mapped_column(unique=True)
+    password_hash: Mapped[str]
+    first_name: Mapped[str]
+    last_name: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())

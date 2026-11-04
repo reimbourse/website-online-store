@@ -1,18 +1,20 @@
+import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
 
 from app.core.database import Base, UUIDIdMixin
+from app.models.product import ProductVariant
 
 
 class CartItem(Base, UUIDIdMixin):
     __tablename__ = "cart_items"
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    variant_id = Column(UUID(as_uuid=True), ForeignKey("product_variants.id"))
-    quantity = Column(Integer, default=1)
-    added_at = Column(DateTime, default=datetime.utcnow)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+    variant_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("product_variants.id"))
+    quantity: Mapped[int] = mapped_column(default=1)
+    added_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
-    variant = relationship("ProductVariant", foreign_keys=[variant_id])
+    variant: Mapped["ProductVariant"] = relationship(back_populates="cart_items")

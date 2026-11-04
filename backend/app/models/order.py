@@ -1,8 +1,10 @@
+import uuid
 from datetime import datetime
+from decimal import Decimal
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey, Numeric
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
 
 from app.core.database import Base, UUIDIdMixin
 
@@ -10,41 +12,41 @@ from app.core.database import Base, UUIDIdMixin
 class Order(Base, UUIDIdMixin):
     __tablename__ = "orders"
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    status = Column(String, default="pending")
-    subtotal = Column(Numeric(10, 2))
-    shipping_cost = Column(Numeric(10, 2))
-    total = Column(Numeric(10, 2))
-    created_at = Column(DateTime, default=datetime.utcnow)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+    status: Mapped[str] = mapped_column(default="pending")
+    subtotal: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    shipping_cost: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    total: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
-    items = relationship("OrderItem", back_populates="order")
-    shipping_address = relationship(
-        "ShippingAddress", back_populates="order", uselist=False
+    items: Mapped[list["OrderItem"]] = relationship(back_populates="order")
+    shipping_address: Mapped["ShippingAddress"] = relationship(
+        back_populates="order", uselist=False
     )
 
 
 class OrderItem(Base, UUIDIdMixin):
     __tablename__ = "order_items"
 
-    order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"))
-    variant_id = Column(UUID(as_uuid=True), ForeignKey("product_variants.id"))
-    quantity = Column(Integer)
-    price_at_purchase = Column(Numeric(10, 2))
+    order_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("orders.id"))
+    variant_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("product_variants.id"))
+    quantity: Mapped[int]
+    price_at_purchase: Mapped[Decimal] = mapped_column(Numeric(10, 2))
 
-    order = relationship("Order", back_populates="items")
+    order: Mapped["Order"] = relationship(back_populates="items")
 
 
 class ShippingAddress(Base, UUIDIdMixin):
     __tablename__ = "shipping_addresses"
 
-    order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id"), unique=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    email = Column(String)
-    country = Column(String)
-    state = Column(String)
-    city = Column(String)
-    address = Column(String)
-    postal_code = Column(String)
+    order_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("orders.id"), unique=True)
+    first_name: Mapped[str]
+    last_name: Mapped[str]
+    email: Mapped[str]
+    country: Mapped[str]
+    state: Mapped[str | None]
+    city: Mapped[str]
+    address: Mapped[str]
+    postal_code: Mapped[str]
 
-    order = relationship("Order", back_populates="shipping_address")
+    order: Mapped["Order"] = relationship(back_populates="shipping_address")

@@ -1,17 +1,19 @@
+import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
 
 from app.core.database import Base, UUIDIdMixin
+from app.models.product import Product
 
 
 class Favorite(Base, UUIDIdMixin):
     __tablename__ = "favorites"
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
-    added_at = Column(DateTime, default=datetime.utcnow)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+    product_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("products.id"))
+    added_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
-    product = relationship("Product", foreign_keys=[product_id])
+    product: Mapped["Product"] = relationship(back_populates="favorites")

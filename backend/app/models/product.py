@@ -1,49 +1,52 @@
-from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, Numeric, String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+import uuid
+from decimal import Decimal
+
+from sqlalchemy import ForeignKey, Numeric
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base, UUIDIdMixin
+from app.models.category import Category, Collection
 from app.schemas.product import GenderEnum
 
 
 class Product(Base, UUIDIdMixin):
     __tablename__ = "products"
 
-    name = Column(String, nullable=False)
-    description = Column(String)
-    price = Column(Numeric(10, 2), nullable=False)
-    category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id"))
-    collection_id = Column(UUID(as_uuid=True), ForeignKey("collections.id"))
-    gender = Column(Enum(GenderEnum), nullable=True)
-    category = relationship("Category", foreign_keys=[category_id])
-    collection = relationship("Collection", foreign_keys=[collection_id])
-    variants = relationship("ProductVariant", back_populates="product")
-    images = relationship("ProductImage", back_populates="product")
+    name: Mapped[str]
+    description: Mapped[str | None]
+    price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    category_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("categories.id"))
+    collection_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("collections.id")
+    )
+    gender: Mapped[GenderEnum | None]
+
+    category: Mapped["Category"] = relationship(back_populates="products")
+    collection: Mapped["Collection"] = relationship(back_populates="products")
+    variants: Mapped["ProductVariant"] = relationship(back_populates="product")
+    images: Mapped["ProductImage"] = relationship(back_populates="product")
 
 
 class ProductVariant(Base, UUIDIdMixin):
     __tablename__ = "product_variants"
 
-    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
-    color = Column(String)
-    size = Column(String)
-    stock = Column(Integer, default=0)
+    product_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("products.id"))
+    color: Mapped[str]
+    size: Mapped[str]
+    stock: Mapped[int] = mapped_column(default=0)
 
-    product = relationship(
-        "Product", back_populates="variants", foreign_keys=[product_id]
-    )
+    product: Mapped["Product"] = relationship(back_populates="variants")
 
 
 class ProductImage(Base, UUIDIdMixin):
     __tablename__ = "product_images"
 
-    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"))
-    variant_id = Column(
-        UUID(as_uuid=True), ForeignKey("product_variants.id"), nullable=True
+    product_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("products.id"))
+    variant_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("product_variants.id")
     )
-    url = Column(String, nullable=False)
-    is_main = Column(Boolean, default=False)
 
-    product = relationship(
-        "Product", back_populates="images", foreign_keys=[product_id]
-    )
+    url: Mapped[str]
+    is_main: Mapped[bool] = mapped_column(default=False)
+
+    product: Mapped["Product"] = relationship(back_populates="images")

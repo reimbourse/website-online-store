@@ -1,5 +1,8 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String
-from sqlalchemy.dialects.postgresql import UUID
+import uuid
+from datetime import datetime
+
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base, UUIDIdMixin
 
@@ -7,9 +10,9 @@ from app.core.database import Base, UUIDIdMixin
 class RefreshToken(Base, UUIDIdMixin):
     __tablename__ = "refresh_tokens"
 
-    token = Column(String, nullable=False)
-    user_id = Column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    token: Mapped[str]
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE")
     )
-    expires_at = Column(DateTime, nullable=False)
-    is_revoked = Column(Boolean, default=False, nullable=False)
+    expires_at: Mapped[datetime]
+    is_revoked: Mapped[bool] = mapped_column(default=False)
