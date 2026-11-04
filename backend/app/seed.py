@@ -1,8 +1,9 @@
 import asyncio
-import sys
 import os
+import sys
 import uuid
-from random import randint, choice
+from random import choice, randint
+
 from sqlalchemy import text
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

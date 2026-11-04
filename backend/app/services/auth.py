@@ -1,18 +1,19 @@
+from datetime import UTC, datetime, timedelta
+
 from fastapi import HTTPException, status
-from datetime import datetime, timezone, timedelta
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.security import (
-    hash_password,
-    verify_password,
     create_access_token,
     create_refresh_token,
+    hash_password,
+    verify_password,
 )
-from app.schemas.user import UserLogin, UserRegister
-from app.models.user import User
-from app.core.config import settings
 from app.models.token import RefreshToken
+from app.models.user import User
+from app.schemas.user import UserLogin, UserRegister
 
 
 class AuthService:
@@ -29,7 +30,7 @@ class AuthService:
         access_token = create_access_token({"sub": str(user.id)})
         refresh_token = create_refresh_token({"sub": str(user.id)})
 
-        expires_at = datetime.now(timezone.utc) + timedelta(
+        expires_at = datetime.now(UTC) + timedelta(
             days=settings.REFRESH_TOKEN_EXPIRE_DAYS
         )
 

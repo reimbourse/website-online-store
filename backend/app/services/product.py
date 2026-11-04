@@ -1,11 +1,12 @@
-from fastapi import HTTPException, status
-from sqlalchemy import select, func, cast, String
-from sqlalchemy.orm import selectinload
-from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from app.models.product import Product, ProductVariant
+from fastapi import HTTPException, status
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+
 from app.models.category import Category
+from app.models.product import Product, ProductVariant
 from app.schemas.product import ProductFilterParams
 
 

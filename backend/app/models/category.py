@@ -1,7 +1,9 @@
+import uuid
+
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
+
 from app.core.database import Base
-import uuid
 
 
 class Category(Base):

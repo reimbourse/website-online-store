@@ -5,7 +5,7 @@ from app.core.database import get_db
 from app.core.dependencies import get_current_user
 from app.models.user import User
 from app.schemas.token import Token
-from app.schemas.user import UserResponse, UserLogin, UserRegister
+from app.schemas.user import UserLogin, UserRegister, UserResponse
 from app.services.auth import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Auth"])

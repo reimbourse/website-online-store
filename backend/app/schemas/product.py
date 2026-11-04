@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, model_validator
 from enum import Enum
 from uuid import UUID
+
+from pydantic import BaseModel, Field, model_validator
 
 
 class GenderEnum(str, Enum):

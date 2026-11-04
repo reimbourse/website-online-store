@@ -1,9 +1,11 @@
-from sqlalchemy import Column, String, Numeric, Integer, ForeignKey, DateTime
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
-from app.core.database import Base
 import uuid
 from datetime import datetime
+
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+
+from app.core.database import Base
 
 
 class Order(Base):

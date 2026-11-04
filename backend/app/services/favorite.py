@@ -1,8 +1,9 @@
+from uuid import UUID
+
 from fastapi import HTTPException, status
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID
+from sqlalchemy.orm import selectinload
 
 from app.models.favorite import Favorite
 from app.models.product import Product
