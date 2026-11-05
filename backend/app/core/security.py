@@ -1,21 +1,24 @@
 from datetime import UTC, datetime, timedelta
 
+from argon2 import PasswordHasher, exceptions
 from jose import jwt
-from passlib.context import CryptContext
 
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+PASSWORD_HASHER = PasswordHasher(time_cost=2, memory_cost=19 * 1024, parallelism=1)
 
 
-def hash_password(password: str) -> str:
-    if isinstance(password, str):
-        password = password[:72]
-    return pwd_context.hash(password)
+def hash_password(plain_password: str) -> str:
+    return PASSWORD_HASHER.hash(plain_password)
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+def verify_password(plain_password: str, stored_hash: str) -> bool:
+    try:
+        return PASSWORD_HASHER.verify(stored_hash, plain_password)
+    except exceptions.VerifyMismatchError:
+        return False
+    except exceptions.VerificationError:
+        return False
 
 
 def create_access_token(data: dict) -> str:
