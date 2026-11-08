@@ -16,6 +16,18 @@ from app.models.user import User
 from app.schemas.user import UserLogin, UserRegister
 
 
+class AuthError(Exception):
+    pass
+
+
+class InvalidCredentialsError(AuthError):
+    pass
+
+
+class EmailAlreadyExistsError(AuthError):
+    pass
+
+
 class AuthService:
     @staticmethod
     async def login_user(payload: UserLogin, db: AsyncSession):
