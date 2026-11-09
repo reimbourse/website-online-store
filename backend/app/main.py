@@ -1,10 +1,15 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+from app.core.config import settings
 
 from app.api.router import v1_router
 
-app = FastAPI(title="Cloth Online Store API")
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    docs_url="/docs" if settings.DEBUG else None,
+    redoc_url="/redoc" if settings.DEBUG else None,
+)
 
 origins = [
     "http://localhost:5173",
@@ -21,10 +26,10 @@ app.add_middleware(
 
 app.include_router(v1_router, prefix="/api")
 
-
-@app.get("/", include_in_schema=False)
-async def redirect_to_docs():
-    return RedirectResponse(url="/docs", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+if settings.DEBUG:
+    @app.get("/", include_in_schema=False)
+    async def redirect_to_docs():
+        return RedirectResponse(url="/docs", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
 
 @app.get("/api/health", summary="Health Check", tags=["Root"])
