@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
@@ -31,7 +30,3 @@ async def redirect_to_docs():
 @app.get("/api/health", summary="Health Check", tags=["Root"])
 async def health():
     return {"success": "ok"}
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, reload=True)
