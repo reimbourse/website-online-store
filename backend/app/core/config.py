@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     PROJECT_NAME: str
     DEBUG: bool
+    CORS_ORIGINS: list
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
