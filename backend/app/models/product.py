@@ -9,8 +9,8 @@ from app.core.database import Base, UUIDIdMixin
 from app.schemas.product import GenderEnum
 
 if TYPE_CHECKING:
-    from app.models.category import Category, Collection
     from app.models.cart import CartItem
+    from app.models.category import Category, Collection
     from app.models.favorite import Favorite
 
 

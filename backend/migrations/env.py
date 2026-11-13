@@ -18,14 +18,16 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, f"{BASE_DIR}/app")
 
-from models.user import User
-from models.product import Product, ProductVariant, ProductImage
-from models.cart import CartItem
-from models.order import Order, OrderItem, ShippingAddress
-from models.favorite import Favorite
-from models.category import Category, Collection
-from core.database import Base
-from core.config import settings
+from app.models.user import User
+from app.models.product import Product, ProductVariant, ProductImage
+from app.models.cart import CartItem
+from app.models.order import Order, OrderItem, ShippingAddress
+from app.models.favorite import Favorite
+from app.models.category import Category, Collection
+from app.models.token import RefreshToken
+
+from app.core.database import Base
+from app.core.config import settings
 
 target_metadata = Base.metadata
 
