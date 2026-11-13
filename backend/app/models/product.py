@@ -10,6 +10,8 @@ from app.schemas.product import GenderEnum
 
 if TYPE_CHECKING:
     from app.models.category import Category, Collection
+    from app.models.cart import CartItem
+    from app.models.favorite import Favorite
 
 
 class Product(Base, UUIDIdMixin):
@@ -28,6 +30,7 @@ class Product(Base, UUIDIdMixin):
     collection: Mapped["Collection"] = relationship(back_populates="products")
     variants: Mapped["ProductVariant"] = relationship(back_populates="product")
     images: Mapped["ProductImage"] = relationship(back_populates="product")
+    favorites: Mapped["Favorite"] = relationship(back_populates="product")
 
 
 class ProductVariant(Base, UUIDIdMixin):
@@ -39,6 +42,7 @@ class ProductVariant(Base, UUIDIdMixin):
     stock: Mapped[int] = mapped_column(default=0)
 
     product: Mapped["Product"] = relationship(back_populates="variants")
+    cart_items: Mapped[list["CartItem"]] = relationship(back_populates="variant")
 
 
 class ProductImage(Base, UUIDIdMixin):
