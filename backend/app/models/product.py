@@ -28,9 +28,9 @@ class Product(Base, UUIDIdMixin):
 
     category: Mapped["Category"] = relationship(back_populates="products")
     collection: Mapped["Collection"] = relationship(back_populates="products")
-    variants: Mapped["ProductVariant"] = relationship(back_populates="product")
-    images: Mapped["ProductImage"] = relationship(back_populates="product")
-    favorites: Mapped["Favorite"] = relationship(back_populates="product")
+    variants: Mapped[list["ProductVariant"]] = relationship(back_populates="product")
+    images: Mapped[list["ProductImage"]] = relationship(back_populates="product")
+    favorites: Mapped[list["Favorite"]] = relationship(back_populates="product")
 
 
 class ProductVariant(Base, UUIDIdMixin):
