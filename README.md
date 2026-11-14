@@ -45,6 +45,10 @@ DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/online_store
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=30
+PROJECT_NAME="Project Name"
+DEBUG=True
+CORS_ORIGINS=["http://127.0.0.1:5173","http://localhost:5173"]
 ```
 
 ```bash
